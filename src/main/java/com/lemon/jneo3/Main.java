@@ -1,5 +1,6 @@
 package com.lemon.jneo3;
 
+import com.lemon.jneo3.entities.Plant;
 import com.lemon.jneo3.graphics.PlaneView;
 import com.lemon.jneo3.land.Biome;
 import com.lemon.jneo3.tables.Table;
@@ -24,6 +25,8 @@ public class Main {
                 new TableEntry<>(0.8f, plains)
         ));
 
+        existence.seed(new Plant.PlantGenes("Grass", 2, 10, 20, 50), 15);
+
         JFrame frame = new JFrame("JNeo3");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Canvas canvas = new PlaneView(existence, 2);
@@ -34,6 +37,7 @@ public class Main {
         int steps = 500;
         for (int i = 0; i < steps; i++) {
             existence.step();
+            System.out.println(Stats.PlantInfo());
             canvas.repaint();
             Thread.sleep(100);
         }

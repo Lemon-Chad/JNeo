@@ -1,18 +1,23 @@
 package com.lemon.jneo3.land;
 
 import com.lemon.jneo3.items.Loot;
+import com.lemon.jneo3.entities.Entity;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Chunk {
     private BiomeTerrain terrain;
     private final int x;
     private final int y;
+    private final List<Entity> entities;
 
     public Chunk(int x, int y) {
         this.terrain = null;
         this.x = x;
         this.y = y;
+        this.entities = new ArrayList<>();
     }
 
     public void setTerrain(BiomeTerrain terrain) {
@@ -22,6 +27,14 @@ public class Chunk {
 
     public Loot scavenge() {
         return terrain.scavenge();
+    }
+
+    public void addEntity(Entity entity) {
+        entities.add(entity);
+    }
+
+    public void removeEntity(Entity entity) {
+        entities.remove(entity);
     }
 
     public int drawNutrients(int amount) {
@@ -57,6 +70,11 @@ public class Chunk {
         // Draw nutrient level
         g.setColor(Color.BLACK);
         g.drawString(String.valueOf(terrain.nutrients()), x, y + h / 2);
+
+        // Draw entities
+        for (Entity entity : entities) {
+            entity.draw(g, x, y, w, h);
+        }
     }
 
     public boolean biomesGenerated() {
@@ -70,5 +88,8 @@ public class Chunk {
     public void step() {
         // Terrain must exist at this point
         terrain.regenNutrients();
+        for (Entity entity : entities) {
+            entity.step();
+        }
     }
 }

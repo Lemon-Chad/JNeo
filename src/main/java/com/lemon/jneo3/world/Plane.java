@@ -1,5 +1,6 @@
 package com.lemon.jneo3.world;
 
+import com.lemon.jneo3.entities.Plant;
 import com.lemon.jneo3.land.Biome;
 import com.lemon.jneo3.land.BiomeTerrain;
 import com.lemon.jneo3.land.Chunk;
@@ -128,6 +129,30 @@ public class Plane {
     public void step() {
         for (Chunk chunk : chunks) {
             chunk.step();
+        }
+    }
+
+    public Chunk getChunk(int x, int y) {
+        return chunkAt(x / chunkDimensions.width, y / chunkDimensions.height);
+    }
+
+    public Point getChunkPos(int x, int y) {
+        return new Point(Math.floorMod(x, chunkDimensions.width), Math.floorMod(y, chunkDimensions.height));
+    }
+
+    public int getChunkWidth() {
+        return chunkDimensions.width;
+    }
+
+    public int getChunkHeight() {
+        return chunkDimensions.height;
+    }
+
+    public void seed(Plant.PlantGenes genes, int count) {
+        for (int i = 0; i < count; i++) {
+            int x = (int) (Math.random() * getWidth());
+            int y = (int) (Math.random() * getHeight());
+            new Plant(x, y, this, genes);
         }
     }
 }
